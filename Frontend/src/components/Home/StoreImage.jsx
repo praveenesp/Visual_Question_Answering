@@ -7,7 +7,8 @@ import { addDoc, collection, getDocs } from "firebase/firestore";
 import Webcam from "react-webcam"; // Import Webcam component
 import History from "../History/History";
 import "./storeImage.css"; // Import CSS file
-// import SpeechRecognition,{useSpeechRecognition} from "react-speech-recognition";
+import  useSpeechToText  from "../SpeechToText/useSpeechToText"; 
+import TextToSpeech from "../TextToSpeech/TextToSpeech";
 
 function StoreImage() {
     const authCtx=useContext(AuthContext);
@@ -19,10 +20,8 @@ function StoreImage() {
     const [result,setResult] = useState('');
     const [captureMode, setCaptureMode] = useState("webcam"); // State to track capture mode
     const webcamRef = useRef(null); // Reference to the webcam component
-    // const {transcript,
-    //        listening,
-    //        resetTranscript,
-    //        bowerserSupportsSpeechRecognition} =useSpeechRecognition();
+    const { isListening, transcript, startListening, stopListening } = useSpeechToText({ continuous: true });
+
 
     // Function to capture image from webcam
     const capture = () => {
@@ -58,14 +57,23 @@ function StoreImage() {
     });
    };
 
-    async function handleClick() {
-        const valRef = collection(txtDB, 'txtData');
-        await addDoc(valRef, { txtval: txt, imgUrl: img ,email:authCtx.emailEntered });
-        alert("Data added Successfully");
-        setResult("Loading....")
-        sendImageToBackend(imageUpload,txt);
-
-    }
+//    async function handleClick() {
+//     try {
+//         const valRef = collection(txtDB, 'txtData');
+//         await addDoc(valRef, { 
+//             txtval: txt, 
+//             imgUrl: img,
+//             email: authCtx.emailEntered,
+//             predictedOutput: result // Include the predicted output
+//         });
+//         alert("Data added Successfully");
+//         setResult("Loading....");
+//         sendImageToBackend(imageUpload, txt);
+//     } catch (error) {
+//         console.error('Error adding document:', error);
+//         alert("Failed to add data. Please try again.");
+//     }
+//    }
 
     async function getData() {
         const valRef = collection(txtDB, 'txtData');
@@ -81,31 +89,79 @@ function StoreImage() {
         getData();
     }, []);
 
+    
+    const startStopListening =()=>
+    {
+      isListening? stopVoiceInput():startListening()
+    }
 
-   const sendImageToBackend = async (image, txt) => {
-        console.log(image,txt);
-        const formData = new FormData();
-        formData.append('image', image);
-        formData.append('text', txt); // Include text input if required by backend
-        try {
-          const response = await fetch('http://localhost:5000/predict', {
-            method: 'POST',
-            body: formData
-          });
+    const stopVoiceInput = () => {
+        setTxt(prevVal => prevVal + (transcript.length ? (prevVal.length ? ' ' : '') + transcript : ''));
+        stopListening();
+    };
+    
+
+//    const sendImageToBackend = async (image, txt) => {
+//         console.log(image,txt);
+//         const formData = new FormData();
+//         formData.append('image', image);
+//         formData.append('text', txt); // Include text input if required by backend
+//         try {
+//           const response = await fetch('http://localhost:5000/predict', {
+//             method: 'POST',
+//             body: formData
+//           });
       
-          if (!response.ok) {
-            throw new Error('Failed to send image to backend');
-          }
+//           if (!response.ok) {
+//             throw new Error('Failed to send image to backend');
+//           }
       
-          const dat = await response.json();
-          console.log('Prediction:', dat.prediction);
-          setResult(dat.prediction);
+//           const dat = await response.json();
+//           console.log('Prediction:', dat.prediction);
+//           setResult(dat.prediction);
           
-          // Do something with the prediction result
+//           // Do something with the prediction result
+//         } catch (error) {
+//           console.error('Error sending image to backend:', error);
+//         }
+//       };
+      async function handleClick() {
+        setResult("Loading....");
+        try {
+            // Send the image to the backend for processing
+            const formData = new FormData();
+            formData.append('image', imageUpload);
+            formData.append('text', txt); // Include text input if required by backend
+    
+            const response = await fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                body: formData
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to send image to backend');
+            }
+    
+            const dat = await response.json();
+            console.log('Prediction:', dat.prediction);
+            const predicted = dat.prediction[0];
+            // Add the result (prediction) along with other data to Firestore
+            const valRef = collection(txtDB, 'txtData');
+            await addDoc(valRef, { 
+                txtval: txt, 
+                imgUrl: img,
+                email: authCtx.emailEntered,
+                predictedOutput:predicted
+            });
+    
+            alert("Data added Successfully");
+            setResult(predicted);
         } catch (error) {
-          console.error('Error sending image to backend:', error);
+            console.error('Error handling click:', error);
+            alert("Failed to add data. Please try again.");
         }
-      };
+    };
+
 
     return (
         <div className="container">
@@ -170,33 +226,39 @@ function StoreImage() {
             )}
         </div>
         <div className="text-container">
-        {/* <p>Microphone:{listening?"ON":"OFF"}</p>
-        <button onClick={SpeechRecognition.startListening}>Start</button>
-        <button onClick={SpeechRecognition.stopListening}>Stop</button>
-        <button onClick={resetTranscript}>Reset</button>
-        <p>{transcript}</p> */}
+         <div className="text-inner-container">
+        <button 
+            onClick={startStopListening}
+            className={`button ${isListening ? 'isListening' : ''}`}
+        >
+            {isListening ? 'Stop Listening' : 'Speak'}
+        </button>
         <input
             type="text"
             onChange={(e) => setTxt(e.target.value)}
             placeholder="Enter your Question"
              className="text-input"
+             disabled={isListening}
+                value={isListening ? txt + (transcript.length ? (txt ? ' ' : '') + transcript : '') : txt}
         />
+        </div>
             <br />
         <button onClick={handleClick} className="save-button">Submit</button>
         {result !== '' && (
-            <div className="result-box">
-                <p className="predicted-output">Predicted Output: {result}</p>
+          <div className="result-box">
+            <p className="predicted-output">Predicted Output: {result}</p>
+                    <TextToSpeech text={result} />
             </div>
         )}
         </div>
-            {/* Display saved data */}
-            {data
-                .filter(value => value.email === authCtx.emailEntered) // Filter data based on email match
+        {/* {   data
+                .filter(value => value.email === authCtx.emailEntered)
                 .map(value => (
-                <div key={value.id}>
-                     <History value={value} />
-                </div>
-    ))}
+                    <div key={value.id}>
+                        <History value={value} />
+                    </div>
+                ))
+            } */}
         </div>
     );
 }

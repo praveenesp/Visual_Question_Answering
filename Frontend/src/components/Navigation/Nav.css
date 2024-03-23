@@ -14,6 +14,7 @@
     font-size: 1.5rem;
     margin-right: auto; /* Push the title to the left */
     color: #333;
+    font-weight: 800;
   }
   
 .navLink {
@@ -50,4 +51,11 @@
 }
 .navButton:hover {
   background-color: #ddd; /* Change background color on hover */
+}
+
+.nav img {
+  width: 40px; /* Set width of the image */
+  height: 40px; /* Set height of the image */
+  margin-right: 10px; /* Add margin for spacing */
+  border-radius: 50%; /* Make the image round */
 }

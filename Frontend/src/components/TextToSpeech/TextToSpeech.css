@@ -1,0 +1,22 @@
+.voice-select {
+    margin-top: 10px;
+}
+
+.text-to-speech-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.speak-button {
+    background-color: #008744;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.speak-button:hover {
+    background-color: #005e2e;
+}

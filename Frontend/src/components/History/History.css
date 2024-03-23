@@ -1,19 +1,47 @@
-/* history.css */
-
-.history-container {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
+h2 {
+  text-align: center;
+  margin-top: 30px;
 }
 
-.history-text {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+.data-container {
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Define grid columns */
+    grid-gap: 20px; /* Add gap between grid items */
+  }
 
-.history-image {
+.data-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin: 20px 0;
+    transition: transform 0.3s ease;
+  }
+  
+  .data-box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .image {
     max-width: 100%;
-    height: auto;
-}
+    max-height: 200px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  
+  .email {
+    font-weight: bold; /* Make email text bold */
+    color: #007bff; /* Change email text color to blue */
+  }
+  
+  .text-value {
+    margin-top: 10px; /* Add some space between email and text value */
+    color: #333; /* Darken text value color */
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+  
