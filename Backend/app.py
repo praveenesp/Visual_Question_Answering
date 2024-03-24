@@ -30,8 +30,6 @@ def predict():
     
     return jsonify({'prediction': result}), 200
 
-def allowed_file(filename, allowed_extensions):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port=5000)
