@@ -1,0 +1,26 @@
+.page-content {
+    display: flex;
+    flex-direction: column;
+     align-items: center;/* Align content to center */
+     border: 1px solid #ccc; /* Add border */
+     border-radius: 5px; /* Add border radius for rounded corners */
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+     max-width: 100%;
+     margin-top: 10px;
+  }
+  
+  .page-title {
+    font-size: 24px; /* Adjust font size */
+    color: #333; /* Text color */
+    margin-bottom: 10px; /* Add space between title and description */
+  }
+  
+  .page-description {
+    font-size: 16px; /* Adjust font size */
+    color: #666; /* Text color */
+    line-height: 1.5;
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-bottom: 10px;
+  }
+  

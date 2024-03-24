@@ -2,6 +2,8 @@ import { auth, provider } from "../../config";
 import { useState, useEffect } from "react";
 import { Link ,useNavigate} from 'react-router-dom';
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import './Auth.css';
 
 export default function Login() {
@@ -9,6 +11,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleGoogleSignIn = () => {
@@ -43,6 +46,11 @@ export default function Login() {
     }
     
   }, []);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
+
 
   return (
     <div>
@@ -51,6 +59,12 @@ export default function Login() {
       <span className="navTitle">PicProbe</span>
       <button className="navButton" onClick={(e)=>navigate("/")}>Singup</button>
       </div>
+      <div class="page-content">
+            <h1 class="page-title">Visual Question and Answering System</h1>
+            <p class="page-description">The web page can help users to respond to the queries related to the image by effectively utilizing 
+             the textual information available in the images to offer additional useful cues and improve understanding of the visual elements in the content. 
+             This system can precisely provide answers by properly interpreting the image features.</p>
+            </div>
           <div className="auth-container">
               <h2>Sign In</h2>
               <div className="auth-form">
@@ -59,11 +73,20 @@ export default function Login() {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)} />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)} />
+                 <div  className="password-container">
+                 <input
+                       type={showPassword ? "text" : "password"} // Toggle password visibility
+                       placeholder="Password"
+                       value={password}
+                       onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                  className="toggle-password-button"
+                   onClick={togglePasswordVisibility}
+                   >
+                              <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                  </button>
+                  </div>
                 <button className="auth-button" onClick={handleEmailSignIn}>Sign In with Email</button>
                 <p className="reset-password-text">Forgot your password? <Link to="/reset-password">Reset it here.</Link></p>
                 <p className="or-text">------ OR ------</p>

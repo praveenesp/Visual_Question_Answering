@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 60vh;
   }
   
   .auth-form {
@@ -80,6 +80,24 @@
   .sign-up-text a:hover {
     text-decoration: underline;
   }
+
+  .password-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .password-container input {
+    width: 250px; /* Adjust width as needed */
+  }
+  
+  .toggle-password-button {
+    margin-top: 0px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
   
   
   

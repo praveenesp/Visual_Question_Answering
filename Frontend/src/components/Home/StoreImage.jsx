@@ -5,7 +5,6 @@ import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import Webcam from "react-webcam"; // Import Webcam component
-import History from "../History/History";
 import "./storeImage.css"; // Import CSS file
 import  useSpeechToText  from "../SpeechToText/useSpeechToText"; 
 import TextToSpeech from "../TextToSpeech/TextToSpeech";
@@ -57,23 +56,6 @@ function StoreImage() {
     });
    };
 
-//    async function handleClick() {
-//     try {
-//         const valRef = collection(txtDB, 'txtData');
-//         await addDoc(valRef, { 
-//             txtval: txt, 
-//             imgUrl: img,
-//             email: authCtx.emailEntered,
-//             predictedOutput: result // Include the predicted output
-//         });
-//         alert("Data added Successfully");
-//         setResult("Loading....");
-//         sendImageToBackend(imageUpload, txt);
-//     } catch (error) {
-//         console.error('Error adding document:', error);
-//         alert("Failed to add data. Please try again.");
-//     }
-//    }
 
     async function getData() {
         const valRef = collection(txtDB, 'txtData');
@@ -100,31 +82,6 @@ function StoreImage() {
         stopListening();
     };
     
-
-//    const sendImageToBackend = async (image, txt) => {
-//         console.log(image,txt);
-//         const formData = new FormData();
-//         formData.append('image', image);
-//         formData.append('text', txt); // Include text input if required by backend
-//         try {
-//           const response = await fetch('http://localhost:5000/predict', {
-//             method: 'POST',
-//             body: formData
-//           });
-      
-//           if (!response.ok) {
-//             throw new Error('Failed to send image to backend');
-//           }
-      
-//           const dat = await response.json();
-//           console.log('Prediction:', dat.prediction);
-//           setResult(dat.prediction);
-          
-//           // Do something with the prediction result
-//         } catch (error) {
-//           console.error('Error sending image to backend:', error);
-//         }
-//       };
       async function handleClick() {
         setResult("Loading....");
         try {
@@ -251,14 +208,6 @@ function StoreImage() {
             </div>
         )}
         </div>
-        {/* {   data
-                .filter(value => value.email === authCtx.emailEntered)
-                .map(value => (
-                    <div key={value.id}>
-                        <History value={value} />
-                    </div>
-                ))
-            } */}
         </div>
     );
 }
