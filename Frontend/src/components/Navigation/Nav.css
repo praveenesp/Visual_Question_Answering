@@ -59,3 +59,20 @@
   margin-right: 10px; /* Add margin for spacing */
   border-radius: 50%; /* Make the image round */
 }
+
+.user-info-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.user-info-card h3 {
+  margin-top: 0;
+}
+
+.user-info-card p {
+  margin: 5px 0;
+}

@@ -33,7 +33,7 @@ function StoreImage() {
             .then(blob => {
                 const file = new File([blob], 'CapturedImage.jpg', { type: 'image/jpeg' });
                 setImageUpload(file);
-                const imgs= ref(imgDB, `imgs/${authCtx.emailEntered}/${img.name + v4()}`);
+                const imgs= ref(imgDB, `imgs/${authCtx.email}/${img.name + v4()}`);
                 uploadBytes(imgs, blob).then(data => {
                     console.log(data, "imgs");
                     getDownloadURL(data.ref).then(val => setImg(val));
@@ -44,7 +44,7 @@ function StoreImage() {
    const handleUpload = (e) => {
      setImageUpload(e.target.files[0]);
      console.log(imageUpload);
-    const imgs = ref(imgDB, `imgs/${authCtx.emailEntered}/${img.name + v4()}`);
+    const imgs = ref(imgDB, `imgs/${authCtx.email}/${img.name + v4()}`);
     uploadBytes(imgs, e.target.files[0]).then(data => {
         console.log(data, "imgs");
         getDownloadURL(data.ref).then(val => {
@@ -61,7 +61,7 @@ function StoreImage() {
         const valRef = collection(txtDB, 'txtData');
         const dataDb = await getDocs(valRef);
         const allData = dataDb.docs
-        .filter(doc => doc.data().email === authCtx.emailEntered) // Filter based on email match
+        .filter(doc => doc.data().email === authCtx.email) // Filter based on email match
         .map(doc => ({ ...doc.data(), id: doc.id }));
         setData(allData);
         console.log(allData)
@@ -82,7 +82,7 @@ function StoreImage() {
         stopListening();
     };
     
-      async function handleClick() {
+    async function handleClick() {
         setResult("Loading....");
         try {
             // Send the image to the backend for processing
@@ -107,7 +107,7 @@ function StoreImage() {
             await addDoc(valRef, { 
                 txtval: txt, 
                 imgUrl: img,
-                email: authCtx.emailEntered,
+                email: authCtx.email,
                 predictedOutput:predicted
             });
     

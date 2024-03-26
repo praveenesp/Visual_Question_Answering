@@ -50,7 +50,7 @@ export const AuthContextProvider = (props) => {
     logout: logoutHandler,
     images:images,
     addImage:imageHandler,
-    emailEntered:mail
+    email:mail
   };
 
   return (

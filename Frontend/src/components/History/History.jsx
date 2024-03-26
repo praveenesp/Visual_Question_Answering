@@ -22,7 +22,7 @@ const History = () => {
           retrievedData.push({ txtval, imgUrl, email, predictedOutput, id: doc.id });
         });
 
-        const userData = retrievedData.filter(item => item.email === authCtx.emailEntered);
+        const userData = retrievedData.filter(item => item.email === authCtx.email);
 
         setData(userData);
         setLoading(false);
@@ -33,7 +33,7 @@ const History = () => {
     };
 
     fetchData();
-  }, [authCtx.emailEntered]);
+  }, [authCtx.email]);
 
   return (
     <div>

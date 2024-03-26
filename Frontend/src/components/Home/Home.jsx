@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import StoreImage from "./StoreImage";
 import Nav from "../Navigation/Nav";
 import "./Home.css"

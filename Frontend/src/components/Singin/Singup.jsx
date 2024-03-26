@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import { auth } from "../../config";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, userDB } from "../../config"; // Import db from your Firebase config
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore"; // Import Firestore functions
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import './Auth.css';
@@ -12,7 +13,7 @@ export default function Signup() {
   const [username, setUsername] = useState('');
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate hook
+  const navigate = useNavigate();
 
   const handleSignup = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -20,14 +21,28 @@ export default function Signup() {
         const user = userCredential.user;
         updateProfile(user, { displayName: username })
           .then(() => {
-            console.log("User profile updated ");
+            console.log("User profile updated");
           })
           .catch((error) => {
             console.error("Error updating profile:", error);
           });
-        console.log("User Name:", username);  
+
+        // Add username and user ID to Firestore collection
+        addDoc(collection(userDB, "users"), {
+          username: username,
+          userId: user.uid,
+          email:user.email
+        })
+        .then(() => {
+          console.log("Username and User ID added to Firestore");
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+
+        console.log("User Name:", username);
         console.log("User signed up:", user.email);
-        navigate('/login'); // Navigate to login page
+        navigate('/login');
       })
       .catch((error) => {
         setError(error.message);

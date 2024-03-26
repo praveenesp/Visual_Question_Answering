@@ -4,7 +4,7 @@ import {getAuth,GoogleAuthProvider} from "firebase/auth";
 import {getStorage} from "firebase/storage";
 import {getFirestore} from "firebase/firestore";
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyBZrvEJfMRiiz2W_8c1iHGC8arNlbSAjWk",
   authDomain: "visual-question-answerin-4c71c.firebaseapp.com",
   projectId: "visual-question-answerin-4c71c",
   storageBucket: "visual-question-answerin-4c71c.appspot.com",
@@ -19,4 +19,5 @@ const auth= getAuth(app);
 const provider=new GoogleAuthProvider();
 const imgDB=getStorage(app);
 const txtDB=getFirestore(app);
-export {auth,provider,imgDB,txtDB};
+const userDB=getFirestore(app);
+export {auth,provider,imgDB,txtDB,userDB};

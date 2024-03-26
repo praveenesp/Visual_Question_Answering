@@ -45,7 +45,7 @@ export default function Login() {
       console.log({email});
     }
     
-  }, []);
+  }, [email]);
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
